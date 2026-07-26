@@ -1,0 +1,2 @@
+# Fallback para navegação direta. As rotas /api/* são atendidas primeiro pelas Pages Functions.
+/* /index.html 200

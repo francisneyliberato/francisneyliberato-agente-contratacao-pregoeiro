@@ -1,0 +1,14 @@
+name = "francisneyliberato-agente-contratacao-pregoeiro"
+compatibility_date = "2026-06-01"
+pages_build_output_dir = "."
+
+[[d1_databases]]
+binding = "DB"
+database_name = "francisneyliberato-agente-contratacao-pregoeiro-db"
+database_id = "b9cfb68f-c80e-4997-93ff-457981a126b6"
+
+# TOKEN_ADMIN deve ser cadastrado como segredo, nunca escrito neste arquivo:
+# npx wrangler pages secret put TOKEN_ADMIN --project-name francisneyliberato-agente-contratacao-pregoeiro
+# Formulário da Editora Liberato:
+# npx wrangler pages secret put RESEND_API_KEY --project-name francisneyliberato-agente-contratacao-pregoeiro
+# Opcional: configurar EDITORA_FROM_EMAIL no painel do Cloudflare Pages com um remetente verificado no Resend.

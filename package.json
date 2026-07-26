@@ -1,0 +1,23 @@
+{
+  "name": "francisneyliberato-agente-contratacao-pregoeiro",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Diagnóstico on-line de maturidade da gestão patrimonial pública.",
+  "scripts": {
+    "dev": "wrangler pages dev . --local",
+    "deploy": "wrangler pages deploy . --project-name francisneyliberato-agente-contratacao-pregoeiro",
+    "db:create": "wrangler d1 create francisneyliberato-agente-contratacao-pregoeiro-db",
+    "db:migrate:local": "wrangler d1 execute francisneyliberato-agente-contratacao-pregoeiro-db --local --file=./schema.sql",
+    "db:migrate": "wrangler d1 execute francisneyliberato-agente-contratacao-pregoeiro-db --remote --file=./schema.sql"
+  },
+  "dependencies": {
+    "xlsx": "^0.18.5",
+    "xlsx-js-style": "^1.2.0"
+  },
+  "devDependencies": {
+    "wrangler": "^4.22.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Autoavaliação on-line para agentes de contratação e pregoeiros, baseada na Lei nº 14.133/2021, por Francisney Liberato.">
+  <meta name="theme-color" content="#071522">
+  <title>Agente de Contratação e Pregoeiro | Francisney Liberato</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css?v=2.0.7">
+  <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js" defer></script>
+  <script src="/vendor/jspdf.umd.min.js?v=2.0.7" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js" defer></script>
+  <script src="/questionnaire-data.js?v=2.0.7" defer></script>
+  <script src="/app.js?v=2.0.7" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Ir para o conteúdo</a>
+  <div class="ambient ambient-one" aria-hidden="true"></div>
+  <div class="ambient ambient-two" aria-hidden="true"></div>
+
+  <header class="site-header" id="top">
+    <a class="brand" href="#inicio" aria-label="Ir para o início">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 48 48" role="img" focusable="false">
+          <defs>
+            <linearGradient id="brand-sky" x1="6" y1="5" x2="41" y2="43" gradientUnits="userSpaceOnUse"><stop stop-color="#49E0CF"/><stop offset="1" stop-color="#3A9DE8"/></linearGradient>
+            <linearGradient id="brand-sun" x1="22" y1="7" x2="38" y2="26" gradientUnits="userSpaceOnUse"><stop stop-color="#FFD96A"/><stop offset="1" stop-color="#FF805B"/></linearGradient>
+          </defs>
+          <path d="M24 4 40 10v12c0 10.2-6.8 17.2-16 21.5C14.8 39.2 8 32.2 8 22V10L24 4Z" fill="url(#brand-sky)"/>
+          <path d="m24 9 10 3.8v8.7c0 6.5-3.9 11.6-10 15-6.1-3.4-10-8.5-10-15v-8.7L24 9Z" fill="#071E32" opacity=".88"/>
+          <path d="M17 25.5h14M19 22v3.5M24 22v3.5M29 22v3.5M16 28.5h16" stroke="#F7FBFF" stroke-width="2.4" stroke-linecap="round"/>
+          <path d="M16 20.5 24 16l8 4.5H16Z" fill="url(#brand-sun)"/>
+          <circle cx="35.5" cy="12.5" r="5.5" fill="#FFD96A"/>
+          <path d="m33.2 12.5 1.6 1.6 3-3.2" fill="none" stroke="#0B3040" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      <span><strong>Francisney Liberato</strong><small>Agente de Contratação e Pregoeiro</small></span>
+    </a>
+    <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="main-nav" id="mainNav" aria-label="Navegação principal">
+      <a href="#inicio">Início</a>
+      <a href="#teste">Teste</a>
+      <a href="#dashboard">Dashboard</a>
+      <a href="#consulta">Meu Resultado</a>
+      <a href="#livros">Livros</a>
+      <a href="#curriculo">Currículo</a>
+      <a href="#redes">Redes sociais</a>
+      <a href="#ecos-graca">Ecos da Gra&ccedil;a</a>
+      <a href="#editora-liberato">Editora Liberato</a>
+      <a href="#administrador">Administrador</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero section" id="inicio">
+      <div class="hero-particles" aria-hidden="true">
+        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+      </div>
+      <div class="hero-content reveal">
+        <span class="eyebrow"><i data-lucide="gavel"></i> Jornada de maturidade profissional</span>
+        <h1>Decida com segurança e conduza certames <em>com excelência.</em></h1>
+        <p>Uma autoavaliação situacional para fortalecer integridade, planejamento, julgamento, liderança e melhoria contínua nas contratações públicas.</p>
+        <div class="hero-quest">
+          <span><i data-lucide="timer"></i><strong>45–60 min</strong> para concluir</span>
+          <span><i data-lucide="shield-check"></i><strong>Relatório</strong> instantâneo</span>
+          <span><i data-lucide="sparkles"></i><strong>+50 XP</strong> de evolução</span>
+        </div>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#teste"><span>Iniciar diagnóstico</span><i data-lucide="arrow-right"></i></a>
+          <a class="button button-ghost" href="#como-funciona"><i data-lucide="play-circle"></i><span>Como funciona</span></a>
+        </div>
+        <div class="hero-proof">
+          <div><strong>50</strong><span>questões situacionais</span></div>
+          <div><strong>10</strong><span>dimensões profissionais</span></div>
+          <div><strong>1</strong><span>plano de melhoria</span></div>
+        </div>
+      </div>
+      <div class="hero-visual reveal">
+        <div class="orbital-card">
+          <div class="score-ring">
+            <svg viewBox="0 0 180 180" aria-hidden="true">
+              <circle cx="90" cy="90" r="72"></circle>
+              <circle class="ring-value" cx="90" cy="90" r="72"></circle>
+            </svg>
+            <span><strong>360°</strong><small>diagnóstico</small></span>
+          </div>
+          <div class="mini-metrics">
+            <span><i data-lucide="shield-check"></i> Riscos críticos</span>
+            <span><i data-lucide="bar-chart-3"></i> Maturidade por eixo</span>
+            <span><i data-lucide="list-checks"></i> Plano automático</span>
+          </div>
+        </div>
+      </div>
+      <div class="wave" aria-hidden="true">
+        <svg viewBox="0 0 1440 140" preserveAspectRatio="none"><path d="M0,96L80,85.3C160,75,320,53,480,58.7C640,64,800,96,960,101.3C1120,107,1280,85,1360,74.7L1440,64L1440,140L0,140Z"></path></svg>
+      </div>
+    </section>
+
+    <section class="section benefits" id="como-funciona">
+      <div class="section-heading reveal">
+        <span class="eyebrow">Diagnóstico aplicado</span>
+        <h2>Mais que uma nota: um roteiro prático de evolução profissional.</h2>
+        <p>O instrumento integra competências técnicas e comportamentais para revelar forças, prioridades e ações de desenvolvimento aplicáveis ao seu contexto.</p>
+      </div>
+      <div class="benefit-grid">
+        <article class="glass-card reveal"><i data-lucide="gauge"></i><h3>Perfil de maturidade</h3><p>Meça a proximidade da sua conduta ao padrão profissional esperado.</p></article>
+        <article class="glass-card reveal"><i data-lucide="triangle-alert"></i><h3>Prioridades</h3><p>Identifique dimensões que exigem supervisão, capacitação e prática dirigida.</p></article>
+        <article class="glass-card reveal"><i data-lucide="file-check-2"></i><h3>Reflexão aplicada</h3><p>Registre evidências, providências e aprendizados relevantes.</p></article>
+        <article class="glass-card reveal"><i data-lucide="route"></i><h3>Plano 30/60/90</h3><p>Transforme o resultado em ações, responsáveis, indicadores e prazos.</p></article>
+        <article class="glass-card reveal"><i data-lucide="scale"></i><h3>Governança pública</h3><p>Fortaleça transparência, integridade e prestação de contas.</p></article>
+      </div>
+    </section>
+
+    <section class="section test-section" id="teste">
+      <div class="section-heading reveal">
+        <span class="eyebrow">Autoavaliação guiada</span>
+        <h2>Autoavaliação do Agente de Contratação e Pregoeiro</h2>
+        <p>Reserve de 45 a 60 minutos. Assinale a conduta que mais se aproxima da sua atuação predominante nos últimos doze meses.</p>
+      </div>
+
+      <div class="diagnostic-shell reveal">
+        <div class="progress-wrap" id="progressWrap">
+          <div class="game-hud">
+            <div class="hud-level"><span class="hud-icon"><i data-lucide="gem"></i></span><div><small>Nível atual</small><strong id="gameLevel">Explorador</strong></div></div>
+            <div class="hud-stat"><small>XP conquistado</small><strong><span id="xpValue">0</span><em>/ 500</em></strong></div>
+            <div class="hud-stat"><small>Respondidas</small><strong><span id="answeredValue">0</span><em>/ 50</em></strong></div>
+            <div class="hud-streak"><i data-lucide="flame"></i><div><small>Sequência</small><strong><span id="streakValue">0</span> respostas</strong></div></div>
+          </div>
+          <div class="progress-copy"><span id="progressLabel">Preparando sua jornada</span><strong id="progressPercent">0%</strong></div>
+          <div class="progress-track"><div class="progress-bar" id="progressBar"></div><span class="progress-spark"></span></div>
+          <div class="step-dots" id="stepDots" aria-label="Progresso do questionário"></div>
+          <div class="mission-map" id="missionMap" aria-label="Mapa dos eixos do diagnóstico"></div>
+          <p class="draft-status" id="draftStatus" role="status">Salvamento automático ativado.</p>
+        </div>
+
+        <form id="diagnosticForm" novalidate>
+          <section class="form-step active" data-step="0" aria-labelledby="leadTitle">
+            <div class="step-heading">
+              <span class="step-icon"><i data-lucide="user-round"></i></span>
+              <div><small>Etapa inicial</small><h3 id="leadTitle">Identificação e acesso</h3><p>Seus dados permitem personalizar o relatório e registrar o diagnóstico.</p></div>
+            </div>
+            <div class="form-grid">
+              <label class="field"><span>Nome completo *</span><input name="nomeCompleto" autocomplete="name" required placeholder="Seu nome completo"></label>
+              <label class="field"><span>WhatsApp *</span><input name="whatsapp" autocomplete="tel" inputmode="tel" required placeholder="(65) 99999-9999"></label>
+              <label class="field"><span>E-mail *</span><input name="email" autocomplete="email" type="email" required placeholder="nome@instituicao.gov.br"></label>
+              <label class="field access-field"><span>Código de acesso * <small>(Digite ou copie e cole o código: FrancisneyLiberato)</small></span><span class="input-icon"><i data-lucide="key-round"></i><input name="codigoAcesso" required autocomplete="off" placeholder="Digite ou cole o código"></span></label>
+            </div>
+            <label class="consent-box">
+              <input type="checkbox" name="consentimentoLgpd" required>
+              <span class="custom-check"><i data-lucide="check"></i></span>
+              <span><strong>Consentimento LGPD</strong>Autorizo o tratamento dos meus dados pessoais para o envio de conteúdos, cursos, livros, palestras, mentorias, eventos, comunicações institucionais e demais contatos relacionados à gestão pública, liderança, inteligência emocional, desenvolvimento profissional e outros temas, do palestrante e professor Francisney Liberato, nos termos da legislação aplicável.</span>
+            </label>
+            <div class="validation-summary" id="leadErrors" role="alert" aria-live="polite"></div>
+            <div class="step-actions end"><button class="button button-primary next-button" type="button">Continuar <i data-lucide="arrow-right"></i></button></div>
+          </section>
+
+          <section class="form-step" data-step="1" aria-labelledby="institutionTitle">
+            <div class="step-heading">
+              <span class="step-icon"><i data-lucide="building-2"></i></span>
+              <div><small>Etapa facultativa</small><h3 id="institutionTitle">Contexto institucional</h3><p>Estas informações enriquecem o relatório, mas você pode avançar sem preenchê-las.</p></div>
+            </div>
+            <div class="optional-banner"><i data-lucide="info"></i><span><strong>Todos os campos abaixo são facultativos.</strong> Preencha apenas o que souber ou desejar informar.</span></div>
+            <div class="form-grid">
+              <label class="field"><span>Órgão ou entidade</span><input name="orgaoEntidade" placeholder="Nome da instituição"></label>
+              <label class="field"><span>Unidade administrativa</span><input name="unidadeAdministrativa" placeholder="Secretaria, setor ou unidade"></label>
+              <label class="field"><span>Município/Estado</span><input name="municipioEstado" placeholder="Cuiabá/MT"></label>
+              <label class="field"><span>Cargo/função</span><input name="cargoFuncao" placeholder="Seu cargo ou função"></label>
+              <label class="field"><span>Telefone</span><input name="telefone" inputmode="tel" placeholder="Telefone institucional"></label>
+              <label class="field"><span>Modalidade de atuação</span><input name="sistemaPatrimonial" placeholder="Pregão, concorrência, apoio, gestão..."></label>
+              <label class="field"><span>Tempo de atuação na área</span><input name="qtdBensMoveis" inputmode="numeric" type="number" min="0" placeholder="Ex.: 8 anos"></label>
+              <label class="field"><span>Quantidade aproximada de processos por ano</span><input name="qtdBensImoveis" inputmode="numeric" type="number" min="0" placeholder="Ex.: 60"></label>
+              <label class="field"><span>Data da última capacitação</span><input name="dataUltimoInventario" type="date"></label>
+              <label class="field"><span>Data da última reaplicação</span><input name="ultimaConciliacao" type="date"></label>
+              <label class="field field-wide"><span>Responsável pela validação das respostas</span><input name="responsavelValidacao" placeholder="Nome e função"></label>
+            </div>
+            <div class="step-actions">
+              <button class="button button-ghost prev-button" type="button"><i data-lucide="arrow-left"></i> Voltar</button>
+              <button class="button button-primary next-button" type="button">Iniciar questionário <i data-lucide="arrow-right"></i></button>
+            </div>
+          </section>
+
+          <div id="questionSteps"></div>
+        </form>
+      </div>
+    </section>
+
+    <section class="section result-section hidden" id="resultado" aria-live="polite">
+      <div class="result-loader" id="resultLoader">
+        <div class="loader-orbit"><span></span><span></span><span></span><strong>F</strong></div>
+        <h2>Consolidando seu diagnóstico</h2>
+        <p>Analisando evidências, riscos e prioridades...</p>
+        <div class="loading-lines"><i></i><i></i><i></i></div>
+      </div>
+
+      <div id="resultContent" class="hidden">
+        <div class="section-heading result-heading reveal">
+          <span class="eyebrow">Seu diagnóstico está pronto</span>
+          <h2>Resultado da Autoavaliação</h2>
+          <p id="resultInstitution"></p>
+        </div>
+        <div id="printableReport">
+          <div class="result-hero glass-card">
+            <div class="result-score">
+              <div class="result-ring" id="resultRing"><span><strong id="adjustedPercent">0%</strong><small>resultado final</small></span></div>
+              <div>
+                <span class="maturity-badge" id="maturityBadge">—</span>
+                <h3 id="resultTitle">Maturidade em análise</h3>
+                <p id="resultAnalysis"></p>
+              </div>
+            </div>
+            <div class="score-comparison">
+              <div><span>Percentual bruto</span><strong id="rawPercent">0%</strong></div>
+              <div><span>Pontuação obtida</span><strong id="totalScore">0</strong></div>
+              <div><span>Questões aplicáveis</span><strong id="applicableCount">0</strong></div>
+            </div>
+          </div>
+
+          <div class="result-grid">
+            <article class="glass-card chart-card">
+              <div class="card-title"><div><span>Visão por dimensão</span><h3>Resultado por eixo</h3></div><i data-lucide="chart-no-axes-column-increasing"></i></div>
+              <div class="axis-chart" id="axisChart"></div>
+            </article>
+            <aside class="result-side">
+              <article class="glass-card highlight-card strong"><i data-lucide="trophy"></i><span>Eixo mais forte</span><h3 id="strongestAxis">—</h3><p id="strongestPercent">—</p></article>
+              <article class="glass-card highlight-card priority"><i data-lucide="target"></i><span>Eixo prioritário</span><h3 id="priorityAxis">—</h3><p id="priorityPercent">—</p></article>
+            </aside>
+          </div>
+
+          <article class="glass-card report-block" id="alertsBlock">
+            <div class="card-title"><div><span>Atenção institucional</span><h3>Gatilhos e alertas críticos</h3></div><i data-lucide="shield-alert"></i></div>
+            <div id="criticalAlerts" class="alert-list"></div>
+          </article>
+
+          <article class="glass-card report-block">
+            <div class="card-title"><div><span>Próximos passos</span><h3>Plano de ação automático</h3></div><i data-lucide="clipboard-check"></i></div>
+            <div class="table-wrap"><table class="action-table"><thead><tr><th>Questão</th><th>Achado e risco</th><th>Recomendação</th><th>Responsável</th><th>Cargo/Função</th><th>Prazo</th><th>Status</th></tr></thead><tbody id="actionPlanBody"></tbody></table></div>
+          </article>
+
+          <article class="glass-card report-block">
+            <div class="card-title"><div><span>Leitura executiva</span><h3>Recomendações prioritárias</h3></div><i data-lucide="sparkles"></i></div>
+            <div id="recommendations" class="recommendation-grid"></div>
+          </article>
+        </div>
+
+        <div class="result-actions">
+          <button class="button button-primary" id="downloadPdf" type="button" disabled><i data-lucide="file-down"></i> Preparando PDF...</button>
+          <button class="button button-secondary" id="shareResult" type="button"><i data-lucide="share-2"></i> Compartilhar PDF</button>
+          <button class="button button-ghost" id="restartTest" type="button"><i data-lucide="rotate-ccw"></i> Refazer teste</button>
+        </div>
+        <p class="save-status" id="saveStatus" role="status"></p>
+      </div>
+    </section>
+
+    <section class="section dashboard-section" id="dashboard">
+      <div class="section-heading reveal">
+        <span class="eyebrow"><i data-lucide="radio-tower"></i> Inteligência em tempo real</span>
+        <h2>Dashboard de maturidade profissional</h2>
+        <p>Resultado consolidado das autoavaliações concluídas, com indicadores acumulados e visão geral do desenvolvimento profissional.</p>
+      </div>
+
+
+      <div class="dashboard-shell reveal">
+        <div class="dashboard-toolbar">
+          <div class="live-indicator"><i></i><span>Atualização automática</span><strong id="dashboardUpdated">Aguardando dados</strong></div>
+          <div class="dashboard-actions">
+            <button class="button button-ghost dashboard-refresh" id="refreshDashboard" type="button"><i data-lucide="refresh-cw"></i> Atualizar agora</button>
+            <button class="button button-primary dashboard-pdf-button" id="downloadDashboardPdf" type="button"><i data-lucide="file-down"></i> Baixar PDF</button>
+            <button class="button button-secondary dashboard-pdf-button" id="shareDashboardPdf" type="button"><i data-lucide="share-2"></i> Compartilhar PDF</button>
+          </div>
+        </div>
+
+        <div class="dashboard-kpis">
+          <article class="dashboard-kpi accent-gold"><span class="kpi-icon"><i data-lucide="clipboard-check"></i></span><div><small>Diagnósticos realizados</small><strong id="dashTotal">0</strong><em id="dashToday">0 hoje</em></div></article>
+          <article class="dashboard-kpi accent-teal"><span class="kpi-icon"><i data-lucide="gauge"></i></span><div><small>Maturidade média</small><strong id="dashAverage">0%</strong><em id="dashAverageLevel">Sem dados</em></div></article>
+          <article class="dashboard-kpi accent-violet"><span class="kpi-icon"><i data-lucide="trophy"></i></span><div><small>Nível predominante</small><strong id="dashDominant">—</strong><em id="dashDominantCount">0 diagnósticos</em></div></article>
+          <article class="dashboard-kpi accent-orange"><span class="kpi-icon"><i data-lucide="triangle-alert"></i></span><div><small>Alertas identificados</small><strong id="dashAlerts">0</strong><em>gatilhos críticos</em></div></article>
+        </div>
+
+        <div class="dashboard-grid">
+          <article class="dashboard-panel maturity-distribution">
+            <div class="dashboard-panel-head"><div><small>Panorama geral</small><h3>Distribuição por maturidade</h3></div><i data-lucide="chart-pie"></i></div>
+            <div class="donut-layout">
+              <div class="dashboard-donut" id="dashboardDonut"><div><strong id="donutTotal">0</strong><span>avaliações</span></div></div>
+              <div class="donut-legend" id="donutLegend"></div>
+            </div>
+          </article>
+
+          <article class="dashboard-panel axis-performance">
+            <div class="dashboard-panel-head"><div><small>Desempenho coletivo</small><h3>Média por eixo</h3></div><i data-lucide="bar-chart-3"></i></div>
+            <div class="dashboard-axis-chart" id="dashboardAxisChart"></div>
+          </article>
+        </div>
+
+        <div class="dashboard-grid lower">
+          <article class="dashboard-panel">
+            <div class="dashboard-panel-head"><div><small>Prioridades recorrentes</small><h3>Eixos que mais exigem atenção</h3></div><i data-lucide="target"></i></div>
+            <div class="ranking-list" id="priorityRanking"></div>
+          </article>
+          <article class="dashboard-panel">
+            <div class="dashboard-panel-head"><div><small>Movimento recente</small><h3>Últimos diagnósticos</h3></div><i data-lucide="activity"></i></div>
+            <div class="recent-list" id="recentDiagnostics"></div>
+          </article>
+        </div>
+
+        <div class="dashboard-empty hidden" id="dashboardEmpty">
+          <i data-lucide="database-zap"></i>
+          <h3>O painel ganhará vida com os diagnósticos</h3>
+          <p>Conclua o primeiro teste para visualizar os indicadores agregados.</p>
+          <a class="button button-primary" href="#teste">Iniciar diagnóstico <i data-lucide="arrow-right"></i></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section lookup-section" id="consulta">
+      <div class="section-heading reveal">
+        <span class="eyebrow"><i data-lucide="search-check"></i> Consultar avaliação</span>
+        <h2>Já participou? Retome ou acesse suas informações</h2>
+        <p>Use esta área para quem já iniciou ou concluiu a pesquisa e deseja retornar ao preenchimento, consultar registros ou baixar novamente o relatório.</p>
+      </div>
+
+      <div class="lookup-shell reveal">
+        <article class="lookup-panel">
+          <div class="dashboard-panel-head"><div><small>Retomada individual</small><h3>Pesquisar por WhatsApp</h3></div><i data-lucide="message-circle"></i></div>
+          <p>Informe o WhatsApp usado no cadastro. O sistema localizará questionários em andamento para continuar de onde parou e avaliações concluídas para baixar novamente o PDF.</p>
+          <div class="lookup-form lookup-form-single">
+            <label class="field"><span>WhatsApp</span><input id="lookupWhatsapp" inputmode="tel" autocomplete="tel" placeholder="(65) 99999-9999"></label>
+            <button class="button button-primary" id="lookupAssessments" type="button"><i data-lucide="search"></i> Consultar</button>
+            <button class="button button-secondary" id="startNewAssessment" type="button"><i data-lucide="plus-circle"></i> Nova avaliação</button>
+          </div>
+          <div class="lookup-results" id="lookupResults" aria-live="polite"></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section cta-section" id="livros">
+      <div class="cta-card reveal">
+        <div><span class="eyebrow">Conhecimento que transforma</span><h2>Conheça os livros de Francisney Liberato</h2><p>Aprofunde sua jornada em gestão pública, liderança, inteligência emocional e desenvolvimento profissional.</p></div>
+        <a class="button button-primary" href="https://francisney.com.br/livros/" target="_blank" rel="noopener">Explorar os livros <i data-lucide="external-link"></i></a>
+      </div>
+    </section>
+
+    <section class="section bio-section" id="curriculo">
+      <div class="bio-card reveal">
+        <div class="bio-monogram">FL</div>
+        <div><span class="eyebrow">Experiência e propósito</span><h2>Francisney Liberato</h2><p>Francisney Liberato é Auditor do Tribunal de Contas de Mato Grosso. Escritor. Palestrante e Professor há mais de 25 anos. Coach e Mentor. Mestre em Educação. Doutor Honoris Causa. Graduado em Administração, Ciências Contábeis (CRC-MT), Direito (OAB-MT) e Economia. Membro da Academia Mundial de Letras.</p><a class="text-link" href="https://francisney.com.br/sobre/" target="_blank" rel="noopener">Conheça o currículo completo <i data-lucide="arrow-up-right"></i></a></div>
+      </div>
+      <div class="courses-showcase reveal">
+        <div class="courses-heading">
+          <div><span class="eyebrow">Formação aplicada</span><h2>Cursos e treinamentos</h2><p>Conteúdos técnicos e comportamentais para instituições públicas, equipes e lideranças, em formato presencial, on-line ou híbrido.</p></div>
+          <a class="button button-secondary" href="https://francisneyliberato.my.canva.site/" target="_blank" rel="noopener">Ver portfólio completo <i data-lucide="external-link"></i></a>
+        </div>
+        <div class="course-columns">
+          <article class="course-category technical">
+            <div class="course-category-head"><span><i data-lucide="landmark"></i></span><div><small>Administração pública</small><h3>Cursos técnicos</h3></div></div>
+            <div class="course-chip-grid">
+              <span>Elaboração de concurso público</span>
+              <span>Processo seletivo e contratação temporária</span>
+              <span>Licitações e contratos administrativos</span>
+              <span>Formação de agentes de contratação e pregoeiros</span>
+              <span>Gestão e fiscalização de contratos</span>
+              <span>Contratações diretas</span>
+              <span>Dispensa e inexigibilidade</span>
+              <span>Registro de preços</span>
+              <span>Gestão patrimonial</span>
+              <span>Processo administrativo disciplinar</span>
+              <span>Noções da Administração Pública</span>
+              <span>Ética e serviço público</span>
+            </div>
+          </article>
+          <article class="course-category behavioral">
+            <div class="course-category-head"><span><i data-lucide="brain-circuit"></i></span><div><small>Desenvolvimento humano</small><h3>Cursos comportamentais</h3></div></div>
+            <div class="course-chip-grid">
+              <span>Atendimento ao público</span>
+              <span>Comunicação assertiva</span>
+              <span>Inteligência emocional</span>
+              <span>Liderança e desenvolvimento de equipes</span>
+              <span>Oratória</span>
+              <span>Foco, gestão do tempo e produtividade</span>
+              <span>Feedback e relacionamento interpessoal</span>
+            </div>
+          </article>
+        </div>
+        <div class="course-meta">
+          <span><i data-lucide="clock-3"></i><strong>Cargas horárias:</strong> 8h, 12h, 16h ou 20h</span>
+          <span><i data-lucide="monitor-play"></i><strong>Modalidades:</strong> presencial, on-line ou híbrida</span>
+          <span><i data-lucide="gamepad-2"></i><strong>Metodologia:</strong> estudos de caso, exercícios, gamificação e dinâmicas</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section social-section" id="redes">
+      <div class="section-heading reveal"><span class="eyebrow">Continue conectado</span><h2>Conteúdo, cursos e novidades</h2><p>Leve esta palestra para sua instituição e desenvolva liderança, inteligência emocional e performance.</p></div>
+      <div class="social-grid reveal">
+        <a href="https://www.instagram.com/francisneyliberato/" target="_blank" rel="noopener" aria-label="Instagram"><i data-lucide="instagram"></i><span>Instagram</span></a>
+        <a href="https://www.facebook.com/francisneyliberato/" target="_blank" rel="noopener" aria-label="Facebook"><i data-lucide="facebook"></i><span>Facebook</span></a>
+        <a href="https://www.youtube.com/channel/UCq80-Rxcja7CmGbrr04TzkA" target="_blank" rel="noopener" aria-label="YouTube"><i data-lucide="youtube"></i><span>YouTube</span></a>
+        <a href="https://br.linkedin.com/in/francisney-liberato-batista-siqueira-87871288" target="_blank" rel="noopener" aria-label="LinkedIn"><i data-lucide="linkedin"></i><span>LinkedIn</span></a>
+        <a href="https://www.kwai.com/@francisneyliberato" target="_blank" rel="noopener" aria-label="Kwai"><i data-lucide="video"></i><span>Kwai</span></a>
+        <a href="https://www.tiktok.com/@francisneyliberato" target="_blank" rel="noopener" aria-label="TikTok"><i data-lucide="music-2"></i><span>TikTok</span></a>
+        <a class="whatsapp" href="https://wa.me/5565999031061" target="_blank" rel="noopener" aria-label="WhatsApp"><i data-lucide="message-circle"></i><span>WhatsApp</span></a>
+      </div>
+    </section>
+
+    <section class="section music-section" id="ecos-graca">
+      <div class="section-heading reveal">
+        <span class="eyebrow"><i data-lucide="music-2"></i> Ecos da Gra&ccedil;a</span>
+        <h2>Mensagens de f&eacute; em forma de can&ccedil;&atilde;o</h2>
+        <p>Ou&ccedil;a as composi&ccedil;&otilde;es musicais de Francisney Liberato e permita que mensagens de f&eacute;, esperan&ccedil;a e gra&ccedil;a fa&ccedil;am parte dos seus momentos.</p>
+      </div>
+      <div class="feature-link-grid reveal">
+        <a class="feature-link-card youtube" href="https://youtube.com/@ecosdagraca7?si=XS4aX-XSCSjNdRao" target="_blank" rel="noopener noreferrer">
+          <i data-lucide="youtube"></i><span>Ouvir no YouTube</span><small>Canal Ecos da Gra&ccedil;a</small>
+        </a>
+        <a class="feature-link-card spotify" href="https://open.spotify.com/playlist/61hayfialh92Rra9LnRWBg?si=afMIs9_vSAyM3r1Opw76rw&pi=VUcn820rTV2zu" target="_blank" rel="noopener noreferrer">
+          <i data-lucide="music"></i><span>Ouvir no Spotify</span><small>Playlist oficial</small>
+        </a>
+        <a class="feature-link-card instagram" href="https://www.instagram.com/ecosdagraca7" target="_blank" rel="noopener noreferrer">
+          <i data-lucide="instagram"></i><span>Seguir no Instagram</span><small>@ecosdagraca7</small>
+        </a>
+      </div>
+    </section>
+
+    <section class="section publisher-section" id="editora-liberato">
+      <div class="publisher-shell reveal">
+        <div class="publisher-copy">
+          <span class="eyebrow"><i data-lucide="book-open-check"></i> Editora Liberato</span>
+          <h2>Publique seu livro com a Editora Liberato</h2>
+          <p>Transforme suas ideias, conhecimentos e hist&oacute;rias em um livro publicado. Conte com a Editora Liberato para dar vida &agrave; sua obra com profissionalismo, cuidado editorial e acompanhamento em cada etapa da publica&ccedil;&atilde;o.</p>
+          <a class="button button-secondary" href="https://www.instagram.com/editoraliberato/" target="_blank" rel="noopener noreferrer"><i data-lucide="instagram"></i> Seguir a Editora Liberato no Instagram</a>
+        </div>
+        <form class="publisher-form" id="publisherForm" novalidate>
+          <input type="text" name="website" class="honeypot" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <input type="hidden" name="startedAt" id="publisherStartedAt">
+          <div class="dashboard-panel-head"><div><small>Contato editorial</small><h3>Quero publicar meu livro</h3></div><i data-lucide="send"></i></div>
+          <div class="form-grid">
+            <label class="field"><span>Nome completo *</span><input name="nomeCompleto" autocomplete="name" required placeholder="Seu nome completo"></label>
+            <label class="field"><span>E-mail *</span><input name="email" type="email" autocomplete="email" required placeholder="nome@email.com"></label>
+            <label class="field"><span>WhatsApp *</span><input name="whatsapp" inputmode="tel" autocomplete="tel" required placeholder="(65) 99999-9999"></label>
+            <label class="field field-wide"><span>Mensagem *</span><textarea name="mensagem" required minlength="10" placeholder="Conte brevemente sobre o livro que deseja publicar."></textarea></label>
+          </div>
+          <button class="button button-primary" id="publisherSubmit" type="submit"><i data-lucide="book-plus"></i> Quero publicar meu livro</button>
+          <div class="validation-summary" id="publisherFeedback" role="status" aria-live="polite"></div>
+        </form>
+      </div>
+    </section>
+
+    <section class="section admin-section" id="administrador">
+      <div class="section-heading reveal">
+        <span class="eyebrow"><i data-lucide="shield-check"></i> Área restrita</span>
+        <h2>Administrador</h2>
+        <p>Digite a senha administrativa para baixar as planilhas de leads em Excel.</p>
+      </div>
+
+      <div class="admin-shell reveal">
+        <article class="admin-card">
+          <div class="dashboard-panel-head"><div><small>Exportação de leads</small><h3>Planilhas disponíveis</h3></div><i data-lucide="file-spreadsheet"></i></div>
+          <div class="admin-login" id="adminLogin">
+            <p>Acesso protegido. Após validar a senha, os botões de download serão liberados.</p>
+            <div class="lookup-form lookup-form-single">
+              <label class="field"><span>Senha do administrador</span><input id="adminPassword" type="password" inputmode="numeric" autocomplete="off" placeholder="Digite a senha"></label>
+              <button class="button button-primary" id="adminUnlock" type="button"><i data-lucide="lock-keyhole"></i> Acessar</button>
+            </div>
+            <div class="admin-message" id="adminMessage" role="status" aria-live="polite"></div>
+          </div>
+
+          <div class="admin-downloads hidden" id="adminDownloads">
+            <p>Baixe os leads do dia selecionado ou uma planilha única acumulada com todos os leads registrados até o momento.</p>
+            <div class="admin-download-grid">
+              <label class="field"><span>Data da planilha diária</span><input id="adminLeadDate" type="date"></label>
+              <button class="button button-primary" id="downloadDailyLeads" type="button"><i data-lucide="calendar-down"></i> Baixar leads do dia</button>
+              <button class="button button-secondary" id="downloadAllLeads" type="button"><i data-lucide="download"></i> Baixar leads acumulados</button>
+            </div>
+            <small class="admin-hint">Para baixar os leads feitos ontem, selecione a data de ontem e clique em “Baixar leads do dia”.</small>
+
+            <div class="admin-dashboard-export">
+              <div class="dashboard-panel-head"><div><small>Exportação consolidada</small><h3>PDF do Dashboard</h3></div><i data-lucide="chart-no-axes-combined"></i></div>
+              <p>Defina um período para gerar o Dashboard com as avaliações realizadas entre as datas e horários informados. Sem filtros, o PDF incluirá todos os registros.</p>
+              <div class="admin-dashboard-filter-grid">
+                <label class="field"><span>Data inicial</span><input id="adminDashboardStartDate" type="date"></label>
+                <label class="field"><span>Horário inicial</span><input id="adminDashboardStartTime" type="time"></label>
+                <label class="field"><span>Data final</span><input id="adminDashboardEndDate" type="date"></label>
+                <label class="field"><span>Horário final</span><input id="adminDashboardEndTime" type="time"></label>
+                <button class="button button-primary" id="downloadAdminDashboardPdf" type="button"><i data-lucide="file-down"></i> Baixar PDF do Dashboard</button>
+              </div>
+              <div class="admin-message" id="adminDashboardPdfMessage" role="status" aria-live="polite"></div>
+            </div>
+
+            <div class="admin-danger-zone">
+              <div>
+                <small>Dashboard da palestra</small>
+                <h3>Limpar Dashboard local e online</h3>
+                <p>Use antes de iniciar uma palestra. O Dashboard passará a mostrar apenas as avaliações feitas a partir deste momento, no navegador e na base online, sem apagar leads, pesquisas individuais, PDFs ou planilhas.</p>
+              </div>
+              <button class="button button-ghost danger-button" id="resetDashboardData" type="button"><i data-lucide="eraser"></i> Limpar Dashboard</button>
+            </div>
+            <div class="admin-message" id="dashboardResetMessage" role="status" aria-live="polite"></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+
+  </main>
+
+  <footer class="site-footer">
+    <div><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 48 48" focusable="false"><defs><linearGradient id="footer-brand-sky" x1="6" y1="5" x2="41" y2="43" gradientUnits="userSpaceOnUse"><stop stop-color="#49E0CF"/><stop offset="1" stop-color="#3A9DE8"/></linearGradient><linearGradient id="footer-brand-sun" x1="22" y1="7" x2="38" y2="26" gradientUnits="userSpaceOnUse"><stop stop-color="#FFD96A"/><stop offset="1" stop-color="#FF805B"/></linearGradient></defs><path d="M24 4 40 10v12c0 10.2-6.8 17.2-16 21.5C14.8 39.2 8 32.2 8 22V10L24 4Z" fill="url(#footer-brand-sky)"/><path d="m24 9 10 3.8v8.7c0 6.5-3.9 11.6-10 15-6.1-3.4-10-8.5-10-15v-8.7L24 9Z" fill="#071E32" opacity=".88"/><path d="M17 25.5h14M19 22v3.5M24 22v3.5M29 22v3.5M16 28.5h16" stroke="#F7FBFF" stroke-width="2.4" stroke-linecap="round"/><path d="M16 20.5 24 16l8 4.5H16Z" fill="url(#footer-brand-sun)"/><circle cx="35.5" cy="12.5" r="5.5" fill="#FFD96A"/><path d="m33.2 12.5 1.6 1.6 3-3.2" fill="none" stroke="#0B3040" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><p><strong>Fortaleça a maturidade profissional nas contratações públicas.</strong><br>Transforme autoavaliação em plano de desenvolvimento.</p></div>
+    <p>© <span id="currentYear"></span> Francisney Liberato · francisneyliberato-agente-contratacao-pregoeiro</p>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"><i data-lucide="check-circle-2"></i><span></span></div>
+  <div class="xp-pop" id="xpPop" aria-hidden="true">+10 XP</div>
+</body>
+</html>
+

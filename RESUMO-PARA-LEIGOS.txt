@@ -1,0 +1,96 @@
+PROJETO: francisneyliberato-gestao-patrimonial-publica
+
+O QUE É
+Este é um site para aplicar o Questionário de Autoavaliação da Gestão
+Patrimonial Pública. A pessoa informa os dados, responde 60 perguntas e recebe
+um diagnóstico com nota, classificação, riscos, resultado por eixo, plano de
+ação e relatório em PDF.
+
+PARA QUE SERVE CADA ARQUIVO
+index.html
+  É a estrutura do site. Aqui ficam os textos institucionais, currículo,
+  seção de livros, redes sociais e WhatsApp.
+
+styles.css
+  Controla cores, tamanhos, animações e aparência no computador e celular.
+
+questionnaire-data.js
+  É o arquivo mais importante para o conteúdo do teste. Contém todas as
+  perguntas, pesos, evidências, níveis de maturidade, gatilhos e recomendações.
+
+app.js
+  Faz as validações, cálculos, resultado, PDF, compartilhamento e salvamento.
+
+functions/api/leads.js
+  Recebe os dados e salva no banco Cloudflare D1.
+
+functions/api/leads-export.js
+  Gera o arquivo CSV dos leads.
+
+functions/api/leads-export-excel.js
+  Gera a planilha Excel dos leads.
+
+schema.sql
+  Cria a tabela do banco de dados.
+
+wrangler.toml
+  Liga o projeto ao Cloudflare e ao banco D1.
+
+ONDE EDITAR AS PERGUNTAS
+Abra questionnaire-data.js e procure por:
+  axes:
+
+Cada pergunta aparece assim:
+  q(número, "Pergunta", "Evidência esperada", peso)
+
+ONDE EDITAR OS LINKS DAS REDES SOCIAIS
+Abra index.html e procure por:
+  EDITAR AQUI
+
+Troque href="#" pelo link oficial. Os links não foram inventados.
+
+ONDE EDITAR O WHATSAPP
+Procure pelo número:
+  5565999031061
+
+Ele aparece no index.html e no app.js.
+
+ONDE EDITAR O CÓDIGO DE ACESSO
+Abra questionnaire-data.js e altere:
+  accessCode: "francisneyliberato"
+
+COMO BAIXAR OS LEADS
+Depois de publicar e configurar TOKEN_ADMIN, acesse:
+
+CSV:
+  /api/leads-export?token=SEU_TOKEN
+
+EXCEL:
+  /api/leads-export-excel?token=SEU_TOKEN
+
+Nunca divulgue o token.
+
+COMO PUBLICAR NO CLOUDFLARE
+1. Instale Node.js 20 ou superior.
+2. Abra o terminal na pasta.
+3. Execute: npm install
+4. Execute: npx wrangler login
+5. Execute: npm run db:create
+6. Copie o database_id para o arquivo wrangler.toml.
+7. Execute: npm run db:migrate
+8. Cadastre o segredo TOKEN_ADMIN.
+9. Execute: npm run deploy
+
+O nome do projeto deve ser:
+  francisneyliberato-gestao-patrimonial-publica
+
+COMO ENVIAR UMA NOVA VERSÃO
+Edite os arquivos e execute novamente:
+  npm run deploy
+
+Se o projeto estiver ligado ao GitHub, basta enviar as alterações ao
+repositório e o Cloudflare atualizará o site.
+
+IMPORTANTE
+Leia também o README.md. Ele contém o passo a passo completo e a solução dos
+problemas mais comuns.
