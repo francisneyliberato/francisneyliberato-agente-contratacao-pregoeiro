@@ -25,7 +25,8 @@
   const PDF_LINKS = {
     assessment: "https://francisneyliberato-agente-contratacao-pregoeiro.pages.dev/",
     site: "https://www.francisney.com.br/",
-    whatsapp: "https://wa.me/5565999031061"
+    whatsapp: "https://wa.me/5565999031061",
+    email: "mailto:francisneyliberato10@gmail.com"
   };
 
   const $ = (selector, root = document) => root.querySelector(selector);
@@ -1580,6 +1581,8 @@ WhatsApp: ${PDF_LINKS.whatsapp}`;
         footerX = footerLink("www.francisney.com.br", PDF_LINKS.site, footerX, footerY);
         footerX = footerText(" | ", footerX, footerY);
         footerX = footerLink("WhatsApp", PDF_LINKS.whatsapp, footerX, footerY);
+        footerX = footerText(" | ", footerX, footerY);
+        footerX = footerLink("E-mail", PDF_LINKS.email, footerX, footerY);
         footerX = footerText(" | Francisney Liberato", footerX, footerY);
         doc.text(`${page}/${pageCount}`, W - M, footerY, { align: "right" });
       }
@@ -1800,6 +1803,10 @@ WhatsApp: ${PDF_LINKS.whatsapp}`;
     pdfInlineText("WhatsApp: ", M, y, { size: 9, color: muted });
     const whatsX = M + doc.getTextWidth("WhatsApp: ");
     pdfInlineLink("+55 65 99903-1061", PDF_LINKS.whatsapp, whatsX, y, { size: 9 });
+    y += 6;
+    pdfInlineText("E-mail: ", M, y, { size: 9, color: muted });
+    const emailX = M + doc.getTextWidth("E-mail: ");
+    pdfInlineLink("francisneyliberato10@gmail.com", PDF_LINKS.email, emailX, y, { size: 9 });
     y += 6;
     pdfInlineText("Página da avaliação: ", M, y, { size: 9, color: muted });
     const evalX = M + doc.getTextWidth("Página da avaliação: ");

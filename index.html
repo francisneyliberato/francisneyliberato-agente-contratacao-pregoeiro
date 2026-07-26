@@ -462,9 +462,9 @@
         <article class="admin-card">
           <div class="dashboard-panel-head"><div><small>Exportação de leads</small><h3>Planilhas disponíveis</h3></div><i data-lucide="file-spreadsheet"></i></div>
           <div class="admin-login" id="adminLogin">
-            <p>Acesso protegido. Após validar a senha, os botões de download serão liberados.</p>
+            <p>Acesso protegido. Digite a senha administrativa no campo abaixo para liberar as planilhas e o PDF do Dashboard.</p>
             <div class="lookup-form lookup-form-single">
-              <label class="field"><span>Senha do administrador</span><input id="adminPassword" type="password" inputmode="numeric" autocomplete="off" placeholder="Digite a senha"></label>
+              <label class="field admin-password-field"><span>Senha do administrador</span><input id="adminPassword" type="password" inputmode="numeric" autocomplete="off" placeholder="Digite a senha de acesso" aria-describedby="adminPasswordHelp"><small id="adminPasswordHelp">Campo obrigatório para acessar a área restrita.</small></label>
               <button class="button button-primary" id="adminUnlock" type="button"><i data-lucide="lock-keyhole"></i> Acessar</button>
             </div>
             <div class="admin-message" id="adminMessage" role="status" aria-live="polite"></div>
