@@ -522,6 +522,8 @@ h1 em { color:transparent; background:linear-gradient(90deg,var(--gold),#ff8f62)
   .feature-link-grid,.publisher-shell { grid-template-columns:1fr; }
 }
 @media (max-width:700px) {
+  /* No celular, o painel não pode cobrir o título da dimensão ao avançar. */
+  .progress-wrap { position:static; }
   .section { padding-left:18px; padding-right:18px; }
   .brand small { display:none; }
   .benefit-grid { grid-template-columns:1fr 1fr; }
@@ -568,10 +570,9 @@ h1 em { color:transparent; background:linear-gradient(90deg,var(--gold),#ff8f62)
   .game-hud strong { font-size:.82rem; }
   .hud-streak svg { width:21px; }
   .progress-copy { font-size:.82rem; }
-  .mission-map { gap:5px; overflow-x:auto; padding:4px 0 6px; scrollbar-width:none; }
-  .mission-map::-webkit-scrollbar { display:none; }
-  .mission-node { min-width:31px; }
-  .mission-node span { width:29px; height:29px; }
+  .mission-map { grid-template-columns:repeat(10,minmax(0,1fr)); gap:3px; overflow:visible; padding:4px 0 6px; }
+  .mission-node { min-width:0; }
+  .mission-node span { width:27px; height:27px; }
   .draft-status { margin-top:6px; font-size:.68rem; }
   .form-step { padding:22px 16px 28px; }
   .step-heading { align-items:flex-start; }
