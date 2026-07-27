@@ -185,6 +185,8 @@
   }
 
   function showStep(index) {
+    // O contexto institucional é complementar: após o cadastro, o teste deve começar imediatamente.
+    if (index === 1) index = 2;
     const steps = $$(".form-step");
     if (index < 0 || index >= steps.length) return;
     steps.forEach(step => step.classList.remove("active"));
@@ -197,16 +199,15 @@
   }
 
   function updateProgress() {
-    const total = DATA.axes.length + 2;
-    const percent = Math.round((state.currentStep / (total - 1)) * 100);
+    // A etapa institucional é opcional e não compõe o avanço principal do questionário.
+    const effectiveStep = state.currentStep === 0 ? 0 : state.currentStep - 1;
+    const percent = Math.round((effectiveStep / DATA.axes.length) * 100);
     $("#progressPercent").textContent = `${percent}%`;
     $("#progressBar").style.width = `${percent}%`;
     $(".progress-track").style.setProperty("--progress", `${Math.min(percent, 98)}%`);
     $("#progressLabel").textContent = state.currentStep === 0
       ? "Identificação e acesso"
-      : state.currentStep === 1
-        ? "Contexto institucional facultativo"
-        : `Dimensão ${state.currentStep - 1}: ${DATA.axes[state.currentStep - 2].short}`;
+      : `Dimensão ${state.currentStep - 1}: ${DATA.axes[state.currentStep - 2].short}`;
     $$("#stepDots i").forEach((dot, i) => {
       dot.classList.toggle("done", i < state.currentStep);
       dot.classList.toggle("active", i === state.currentStep);
