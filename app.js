@@ -11,7 +11,8 @@
     streak: 0,
     currentDraftId: null,
     lastSavedAt: null,
-    pdfReady: false
+    pdfReady: false,
+    dashboardData: null
   };
 
   const STORAGE_KEYS = {
@@ -998,6 +999,8 @@
       preview = createAdminDashboardPdfPreview(payload.data, filters.label);
       const file = await generateDashboardPDF({
         target: preview,
+        data: payload.data,
+        filterLabel: filters.label,
         returnFile: true,
         silent: true,
         skipRefresh: true,
@@ -1352,8 +1355,7 @@ WhatsApp: ${PDF_LINKS.whatsapp}`;
   async function generateDashboardPDF(options = {}) {
     const silent = Boolean(options.silent);
     const ready = await waitForPdfLibrary(12000);
-    const canvasReady = await waitForHtml2Canvas(12000);
-    if (!ready || !canvasReady) {
+    if (!ready) {
       if (!silent) showToast("Bibliotecas do PDF ainda não carregaram. Recarregue a página e tente novamente.");
       return null;
     }
@@ -1364,46 +1366,11 @@ WhatsApp: ${PDF_LINKS.whatsapp}`;
     }
     try {
       if (!options.skipRefresh) await loadDashboard(false);
-      const target = options.target || $("#dashboard");
-      if (!target) throw new Error("Dashboard não encontrado.");
-      const canvas = await html2canvas(target, {
-        backgroundColor: "#071522",
-        scale: Math.min(2, window.devicePixelRatio || 1.5),
-        useCORS: true,
-        logging: false,
-        windowWidth: Math.max(document.documentElement.clientWidth, target.scrollWidth),
-        ignoreElements: element => element.tagName?.toLowerCase() === "svg",
-        onclone: clonedDocument => {
-          const clonedDashboard = clonedDocument.querySelector("#dashboard");
-          clonedDashboard?.querySelectorAll(".kpi-icon").forEach(element => {
-            element.style.backgroundColor = "rgba(246,185,74,.12)";
-            element.style.borderColor = "rgba(246,185,74,.22)";
-          });
-          clonedDashboard?.querySelectorAll("*").forEach(element => {
-            const style = element.style;
-            if (style.color?.includes("color(")) style.color = "#f3f8fb";
-            if (style.backgroundColor?.includes("color(")) style.backgroundColor = "transparent";
-            if (style.borderColor?.includes("color(")) style.borderColor = "rgba(255,255,255,.12)";
-          });
-        }
-      });
+      const data = options.data || state.dashboardData || aggregateDashboardData(loadLocalLeads());
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF({ unit: "mm", format: "a4", orientation: "landscape", compress: true });
       const W = 297, H = 210, M = 14;
-      const headerH = 26, footerH = 15;
-      const contentTop = headerH + 7;
-      const contentH = H - contentTop - footerH;
-      const contentW = W - M * 2;
-      const imageData = canvas.toDataURL("image/png", 0.98);
-      const imageH = canvas.height * contentW / canvas.width;
-      const pageCount = Math.max(1, Math.ceil(imageH / contentH));
-
-      for (let page = 0; page < pageCount; page++) {
-        if (page > 0) doc.addPage();
-        doc.addImage(imageData, "PNG", M, contentTop - page * contentH, contentW, imageH, undefined, "FAST");
-        addDashboardPdfHeader(doc, W, M);
-        addDashboardPdfFooter(doc, W, H, M, page + 1, pageCount);
-      }
+      drawDashboardPdf(doc, data, options.filterLabel || "Todos os registros", W, H, M);
 
       const blob = doc.output("blob");
       const filename = options.filename || `dashboard-agente-contratacao-${new Date().toISOString().slice(0, 10)}.pdf`;
@@ -1422,6 +1389,45 @@ WhatsApp: ${PDF_LINKS.whatsapp}`;
       }
       if (window.lucide) window.lucide.createIcons();
     }
+  }
+
+  function drawDashboardPdf(doc, data, filterLabel, W, H, M) {
+    const ink = [18, 35, 53], teal = [85, 199, 164], gold = [246, 185, 74], muted = [116, 137, 153];
+    const total = Number(data.total || 0), average = Number(data.average || 0), distribution = data.distribution || {};
+    const dominant = Object.entries(distribution).sort((a, b) => b[1] - a[1])[0] || ["Sem dados", 0];
+    const card = (x, label, value, detail, color) => {
+      doc.setFillColor(...ink); doc.setDrawColor(43, 69, 91); doc.roundedRect(x, 43, 64, 31, 4, 4, "FD");
+      doc.setFillColor(...color); doc.roundedRect(x + 5, 49, 4, 19, 2, 2, "F");
+      doc.setTextColor(160, 177, 193); doc.setFont("helvetica", "bold"); doc.setFontSize(6.5); doc.text(label.toUpperCase(), x + 13, 52);
+      doc.setTextColor(245, 249, 252); doc.setFont("times", "bold"); doc.setFontSize(value.length > 20 ? 12 : 18); doc.text(value, x + 13, 63);
+      doc.setTextColor(...muted); doc.setFont("helvetica", "normal"); doc.setFontSize(7); doc.text(detail, x + 13, 69);
+    };
+    addDashboardPdfHeader(doc, W, M);
+    doc.setTextColor(...muted); doc.setFont("helvetica", "normal"); doc.setFontSize(7); doc.text(filterLabel, M, 34); doc.text(`Emitido em ${formatDateTime(new Date().toISOString())}`, W - M, 34, { align: "right" });
+    card(M, "Diagnósticos realizados", total.toLocaleString("pt-BR"), `${Number(data.today || 0)} hoje`, teal);
+    card(M + 69, "Maturidade média", formatPercent(average), total ? classifyMaturity(average).name : "Sem dados", gold);
+    card(M + 138, "Nível predominante", dominant[0], `${dominant[1]} ${dominant[1] === 1 ? "diagnóstico" : "diagnósticos"}`, [169, 139, 244]);
+    card(M + 207, "Alertas identificados", Number(data.alertCount || 0).toLocaleString("pt-BR"), "gatilhos críticos", [239, 92, 103]);
+    doc.setFillColor(...ink); doc.setDrawColor(43, 69, 91); doc.roundedRect(M, 83, W - M * 2, 88, 4, 4, "FD");
+    doc.setTextColor(...gold); doc.setFont("helvetica", "bold"); doc.setFontSize(7); doc.text("PANORAMA GERAL", M + 8, 94);
+    doc.setTextColor(245, 249, 252); doc.setFont("times", "bold"); doc.setFontSize(18); doc.text("Distribuição por maturidade", M + 8, 106);
+    const colors = [[239,92,103],[240,138,75],[243,189,79],[85,199,164],[82,191,230]];
+    Object.entries(distribution).forEach(([name, count], index) => { const y = 119 + index * 10; doc.setFillColor(...(colors[index] || muted)); doc.circle(M + 11, y - 2, 2.2, "F"); doc.setTextColor(215,225,233); doc.setFont("helvetica", "normal"); doc.setFontSize(8.5); doc.text(name, M + 17, y); doc.setTextColor(245,249,252); doc.setFont("helvetica", "bold"); doc.text(String(count), M + 110, y, { align:"right" }); });
+    doc.setFillColor(7, 21, 34); doc.circle(M + 179, 133, 29, "F"); doc.setTextColor(245,249,252); doc.setFont("times", "bold"); doc.setFontSize(28); doc.text(String(total), M + 179, 131, { align:"center" }); doc.setFont("helvetica", "normal"); doc.setFontSize(8); doc.setTextColor(188,203,216); doc.text(total === 1 ? "avaliação" : "avaliações", M + 179, 141, { align:"center" });
+    addDashboardPdfFooter(doc, W, H, M, 1, 2);
+    doc.addPage(); addDashboardPdfHeader(doc, W, M);
+    doc.setTextColor(...gold); doc.setFont("helvetica", "bold"); doc.setFontSize(7); doc.text("DESEMPENHO COLETIVO", M, 37); doc.setTextColor(245,249,252); doc.setFont("times", "bold"); doc.setFontSize(18); doc.text("Média por dimensão", M, 48);
+    const axes = data.axes?.length ? data.axes : DATA.axes.map(axis => ({ id: axis.id, short: axis.short, average: 0 }));
+    axes.slice(0, 10).forEach((axis, index) => { const y = 59 + index * 11; doc.setTextColor(209,222,232); doc.setFont("helvetica", "normal"); doc.setFontSize(7); doc.text(`${axis.id}. ${String(axis.short || axis.name).slice(0, 30)}`, M, y); doc.setFillColor(36,59,78); doc.roundedRect(M + 72, y - 4, 93, 4, 2, 2, "F"); doc.setFillColor(...teal); doc.roundedRect(M + 72, y - 4, Math.max(0, Math.min(93, 93 * Number(axis.average || 0) / 100)), 4, 2, 2, "F"); doc.setTextColor(...gold); doc.setFont("helvetica", "bold"); doc.text(formatPercent(axis.average || 0), M + 175, y); });
+    const x = M + 194, w = W - M - x; doc.setFillColor(...ink); doc.setDrawColor(43,69,91); doc.roundedRect(x, 43, w, 59, 4, 4, "FD"); doc.setTextColor(...gold); doc.setFont("helvetica", "bold"); doc.setFontSize(7); doc.text("PRIORIDADES RECORRENTES", x + 7, 53);
+    const priorities = data.priorities || [];
+    if (!priorities.length) { doc.setTextColor(...muted); doc.setFont("helvetica", "normal"); doc.setFontSize(8); doc.text("Ainda não há prioridades consolidadas.", x + 7, 67); }
+    priorities.slice(0, 3).forEach((item, index) => { const y = 65 + index * 12; doc.setFillColor(169,139,244); doc.circle(x + 10, y - 2, 3.2, "F"); doc.setTextColor(245,249,252); doc.setFont("helvetica", "bold"); doc.setFontSize(7); doc.text(String(index + 1), x + 10, y, { align:"center" }); doc.setTextColor(215,225,233); doc.setFont("helvetica", "normal"); doc.text(doc.splitTextToSize(String(item.name), w - 25).slice(0, 2), x + 17, y - 1); doc.setTextColor(...gold); doc.text(`${item.count}x`, x + w - 7, y - 1, { align:"right" }); });
+    doc.setFillColor(...ink); doc.setDrawColor(43,69,91); doc.roundedRect(x, 111, w, 50, 4, 4, "FD"); doc.setTextColor(...gold); doc.setFont("helvetica", "bold"); doc.setFontSize(7); doc.text("ÚLTIMOS DIAGNÓSTICOS", x + 7, 121);
+    const recent = data.recent || [];
+    if (!recent.length) { doc.setTextColor(...muted); doc.setFont("helvetica", "normal"); doc.setFontSize(8); doc.text("Nenhum diagnóstico concluído no período.", x + 7, 135); }
+    recent.slice(0, 3).forEach((item, index) => { const y = 133 + index * 8; doc.setFillColor(...teal); doc.circle(x + 9, y - 2, 1.8, "F"); doc.setTextColor(215,225,233); doc.setFont("helvetica", "normal"); doc.setFontSize(7); doc.text(`${String(item.level || "Sem classificação").slice(0, 22)} · ${formatPercent(item.percent || 0)}`, x + 15, y); });
+    addDashboardPdfFooter(doc, W, H, M, 2, 2);
   }
 
   function addDashboardPdfHeader(doc, W, M) {
@@ -2024,6 +2030,7 @@ WhatsApp: ${PDF_LINKS.whatsapp}`;
   }
 
   function renderDashboard(data) {
+    state.dashboardData = data;
     const total = Number(data.total || 0);
     const distributionEntries = Object.entries(data.distribution || {});
     const dominant = [...distributionEntries].sort((a, b) => b[1] - a[1])[0] || ["—", 0];
