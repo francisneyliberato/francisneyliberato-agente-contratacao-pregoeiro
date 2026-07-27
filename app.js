@@ -68,7 +68,7 @@
         <div class="step-heading">
           <span class="step-icon"><i data-lucide="${axis.icon}"></i></span>
           <div>
-            <small>Eixo ${axis.id} de ${DATA.axes.length}</small>
+            <small>Dimensão ${axis.id} de ${DATA.axes.length}</small>
             <h3 id="axis-title-${axis.id}">${escapeHTML(axis.name)}</h3>
             <p>Responda de acordo com sua conduta predominante nos últimos doze meses.</p>
           </div>
@@ -83,7 +83,7 @@
           <button class="button button-ghost prev-button" type="button"><i data-lucide="arrow-left"></i> Anterior</button>
           ${axisIndex === DATA.axes.length - 1
             ? `<button class="button button-primary calculate-button" type="button">Calcular resultado <i data-lucide="sparkles"></i></button>`
-            : `<button class="button button-primary next-button" type="button">Próximo eixo <i data-lucide="arrow-right"></i></button>`}
+            : `<button class="button button-primary next-button" type="button">Próxima dimensão <i data-lucide="arrow-right"></i></button>`}
         </div>
       </section>
     `).join("");
@@ -91,7 +91,7 @@
     const totalSteps = DATA.axes.length + 2;
     $("#stepDots").innerHTML = Array.from({ length: totalSteps }, (_, i) => `<i data-dot="${i}"></i>`).join("");
     $("#missionMap").innerHTML = DATA.axes.map(axis => `
-      <button class="mission-node" type="button" data-mission="${axis.id}" aria-label="Eixo ${axis.id}: ${escapeHTML(axis.name)}" disabled>
+      <button class="mission-node" type="button" data-mission="${axis.id}" aria-label="Dimensão ${axis.id}: ${escapeHTML(axis.name)}" disabled>
         <span><i data-lucide="${axis.icon}"></i></span><small>${axis.id}</small>
       </button>
     `).join("");
@@ -206,7 +206,7 @@
       ? "Identificação e acesso"
       : state.currentStep === 1
         ? "Contexto institucional facultativo"
-        : `Eixo ${state.currentStep - 1}: ${DATA.axes[state.currentStep - 2].short}`;
+        : `Dimensão ${state.currentStep - 1}: ${DATA.axes[state.currentStep - 2].short}`;
     $$("#stepDots i").forEach((dot, i) => {
       dot.classList.toggle("done", i < state.currentStep);
       dot.classList.toggle("active", i === state.currentStep);
@@ -419,10 +419,10 @@
       const priority = score <= 1 ? "Crítica" : score === 2 ? "Alta" : score === 3 ? "Média" : "Baixa";
       const deadline = suggestDeadline(priority);
       const finding = score <= 2
-        ? `A prática “${question.text}” apresenta maturidade ${score}/5. ${answer.observation}`
+        ? `A conduta declarada para “${question.text}” recebeu ${score}/5. ${answer.observation}`
         : score === 3
-          ? `A prática está formalizada, porém com baixa evidência ou execução inconsistente. ${answer.observation}`
-          : `Prática implementada com nota ${score}/5 e evidência indicada.`;
+          ? `A conduta demonstra desenvolvimento intermediário e requer aplicação mais consistente. ${answer.observation}`
+          : `Conduta declarada com nota ${score}/5 e evidência indicada.`;
       plans.push({
         question: question.number,
         axis: axis.name,
@@ -526,7 +526,7 @@
     const recommendationAxes = [...result.axisResults].sort((a, b) => a.percent - b.percent).slice(0, 6);
     $("#recommendations").innerHTML = `
       <div class="recommendation-item"><span>Recomendação geral</span><p>${escapeHTML(result.level.recommendation)}</p></div>
-      ${recommendationAxes.map(axis => `<div class="recommendation-item"><span>Eixo ${axis.id} · ${formatPercent(axis.percent)}</span><p>${escapeHTML(axis.recommendation)}</p></div>`).join("")}
+      ${recommendationAxes.map(axis => `<div class="recommendation-item"><span>Dimensão ${axis.id} · ${formatPercent(axis.percent)}</span><p>${escapeHTML(axis.recommendation)}</p></div>`).join("")}
     `;
     if (window.lucide) window.lucide.createIcons();
   }
@@ -657,7 +657,7 @@
     state.currentDraftId = id;
     state.lastSavedAt = draft.updatedAt;
     const status = $("#draftStatus");
-    if (status) status.textContent = `Salvo automaticamente s ${new Date(draft.updatedAt).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}.`;
+    if (status) status.textContent = `Salvo automaticamente às ${new Date(draft.updatedAt).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}.`;
   }
 
   function collectPartialAnswers() {
@@ -1674,8 +1674,8 @@ WhatsApp: ${PDF_LINKS.whatsapp}`;
     doc.text(coverTitle, M, 76);
     doc.setDrawColor(...gold); doc.setLineWidth(1); doc.line(M, 117, 70, 117);
     doc.setFont("helvetica", "normal"); doc.setFontSize(11); doc.setTextColor(180, 198, 214);
-    doc.text("Diagnóstico de maturidade, matriz de riscos,", M, 130);
-    doc.text("evidências e plano de melhoria", M, 137);
+    doc.text("Autoavaliação profissional, resultados e", M, 130);
+    doc.text("plano de desenvolvimento para contratações públicas", M, 137);
     doc.setFillColor(...navy2);
     doc.roundedRect(M, 170, contentW, 62, 5, 5, "F");
     doc.setTextColor(...gold); doc.setFont("helvetica", "bold"); doc.setFontSize(7); doc.text("PARTICIPANTE", M + 8, 182);
@@ -1716,13 +1716,13 @@ WhatsApp: ${PDF_LINKS.whatsapp}`;
     if (state.result.activeCap) paragraph(`Ajuste por gatilho crítico: o resultado final foi limitado a ${state.result.activeCap}%.`, { size: 9, color: red, bold: true });
 
     sectionTitle("Destaques");
-    paragraph(`Eixo mais forte: ${state.result.strongest.name} (${formatPercent(state.result.strongest.percent)}).`, { bold: true, color: navy2 });
-    paragraph(`Eixo prioritário: ${state.result.priority.name} (${formatPercent(state.result.priority.percent)}).`, { bold: true, color: navy2 });
+    paragraph(`Dimensão mais forte: ${state.result.strongest.name} (${formatPercent(state.result.strongest.percent)}).`, { bold: true, color: navy2 });
+    paragraph(`Dimensão prioritária: ${state.result.priority.name} (${formatPercent(state.result.priority.percent)}).`, { bold: true, color: navy2 });
 
-    // Eixos
-    newPage("Resultados por eixo");
+    // Dimensões
+    newPage("Resultados por dimensão");
     state.result.axisResults.forEach(axis => {
-      ensure(16, "Resultados por eixo");
+      ensure(16, "Resultados por dimensão");
       doc.setFont("helvetica", "bold"); doc.setFontSize(8); doc.setTextColor(...navy2);
       doc.text(`${axis.id}. ${axis.name}`, M, y);
       doc.setTextColor(...muted); doc.text(formatPercent(axis.percent), W - M, y, { align: "right" });
@@ -1733,9 +1733,9 @@ WhatsApp: ${PDF_LINKS.whatsapp}`;
       y += 10;
     });
     y += 3;
-    sectionTitle("Recomendações por eixo");
+    sectionTitle("Recomendações por dimensão");
     [...state.result.axisResults].sort((a, b) => a.percent - b.percent).forEach(axis => {
-      paragraph(`${axis.id}. ${axis.short} (${formatPercent(axis.percent)}): ${axis.recommendation}`, { size: 8, color: muted, after: 3, section: "Recomendações por eixo" });
+      paragraph(`${axis.id}. ${axis.short} (${formatPercent(axis.percent)}): ${axis.recommendation}`, { size: 8, color: muted, after: 3, section: "Recomendações por dimensão" });
     });
 
     // Alertas
@@ -1756,19 +1756,19 @@ WhatsApp: ${PDF_LINKS.whatsapp}`;
     }
 
     // Plano de ação
-    newPage("Plano de ação automático");
+    newPage("Plano de desenvolvimento");
     state.result.actionPlan.filter(plan => typeof plan.score === "number" && plan.score <= 3).forEach(plan => {
-      ensure(55, "Plano de ação automático");
+      ensure(55, "Plano de desenvolvimento");
       doc.setFillColor(...navy2); doc.roundedRect(M, y, contentW, 10, 2, 2, "F");
       doc.setTextColor(...gold); doc.setFont("helvetica", "bold"); doc.setFontSize(8);
       doc.text(`QUESTÃO ${plan.question} · NOTA ${plan.score} · ${plan.axis}`, M + 4, y + 6.5);
       y += 15;
-      paragraph(`Achado: ${plan.finding}`, { size: 8, color: navy2, bold: true, after: 2, section: "Plano de ação automático" });
-      paragraph(`Risco: ${plan.risk}`, { size: 7.5, after: 2, section: "Plano de ação automático" });
-      paragraph(`Causa provável: ${plan.cause}`, { size: 7.5, after: 2, section: "Plano de ação automático" });
-      paragraph(`Recomendação: ${plan.recommendation}`, { size: 7.5, color: navy2, after: 2, section: "Plano de ação automático" });
-      paragraph(`Responsável sugerido: ${plan.owner || "Opcional"} · Cargo/Função: ${plan.ownerRole || "Opcional"} · Prazo sugerido: ${plan.deadline || suggestDeadline(plan.priority)} · Status: ${plan.status}`, { size: 7.5, bold: true, after: 2, section: "Plano de ação automático" });
-      paragraph(`Evidência de conclusão: ${plan.evidence}`, { size: 7.5, after: 6, section: "Plano de ação automático" });
+      paragraph(`Achado: ${plan.finding}`, { size: 8, color: navy2, bold: true, after: 2, section: "Plano de desenvolvimento" });
+      paragraph(`Risco: ${plan.risk}`, { size: 7.5, after: 2, section: "Plano de desenvolvimento" });
+      paragraph(`Causa provável: ${plan.cause}`, { size: 7.5, after: 2, section: "Plano de desenvolvimento" });
+      paragraph(`Recomendação: ${plan.recommendation}`, { size: 7.5, color: navy2, after: 2, section: "Plano de desenvolvimento" });
+      paragraph(`Responsável sugerido: ${plan.owner || "Opcional"} · Cargo/Função: ${plan.ownerRole || "Opcional"} · Prazo sugerido: ${plan.deadline || suggestDeadline(plan.priority)} · Status: ${plan.status}`, { size: 7.5, bold: true, after: 2, section: "Plano de desenvolvimento" });
+      paragraph(`Evidência de conclusão: ${plan.evidence}`, { size: 7.5, after: 6, section: "Plano de desenvolvimento" });
     });
 
     // Respostas completas
@@ -1777,7 +1777,7 @@ WhatsApp: ${PDF_LINKS.whatsapp}`;
       ensure(16, "Resumo das respostas");
       doc.setFillColor(236, 241, 245); doc.roundedRect(M, y, contentW, 9, 2, 2, "F");
       doc.setTextColor(...navy2); doc.setFont("helvetica", "bold"); doc.setFontSize(9);
-      doc.text(`Eixo ${axis.id} — ${axis.name}`, M + 4, y + 6);
+      doc.text(`Dimensão ${axis.id} — ${axis.name}`, M + 4, y + 6);
       y += 14;
       axis.questions.forEach(question => {
         const answer = state.answers[question.number];
@@ -2044,7 +2044,7 @@ WhatsApp: ${PDF_LINKS.whatsapp}`;
 
     $("#priorityRanking").innerHTML = data.priorities?.length
       ? data.priorities.map((item, index) => `
-        <div class="ranking-item"><span class="ranking-position">${index + 1}</span><div><h4>${escapeHTML(item.name)}</h4><p>Indicado como eixo prioritário</p></div><strong>${item.count}×</strong></div>
+        <div class="ranking-item"><span class="ranking-position">${index + 1}</span><div><h4>${escapeHTML(item.name)}</h4><p>Indicada como dimensão prioritária</p></div><strong>${item.count}×</strong></div>
       `).join("")
       : `<div class="no-alerts">Ainda não há prioridades consolidadas.</div>`;
 

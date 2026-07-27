@@ -10,13 +10,13 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/styles.css?v=2.0.8">
+  <link rel="stylesheet" href="/styles.css?v=2.0.9">
   <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js" defer></script>
   <script src="/vendor/jspdf.umd.min.js?v=2.0.7" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js" defer></script>
   <script src="/questionnaire-data.js?v=2.0.7" defer></script>
-  <script src="/app.js?v=2.0.7" defer></script>
+  <script src="/app.js?v=2.0.8" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Ir para o conteúdo</a>
@@ -93,7 +93,7 @@
           </div>
           <div class="mini-metrics">
             <span><i data-lucide="shield-check"></i> Riscos críticos</span>
-            <span><i data-lucide="bar-chart-3"></i> Maturidade por eixo</span>
+            <span><i data-lucide="bar-chart-3"></i> Maturidade por dimensão</span>
             <span><i data-lucide="list-checks"></i> Plano automático</span>
           </div>
         </div>
@@ -136,7 +136,7 @@
           <div class="progress-copy"><span id="progressLabel">Preparando sua jornada</span><strong id="progressPercent">0%</strong></div>
           <div class="progress-track"><div class="progress-bar" id="progressBar"></div><span class="progress-spark"></span></div>
           <div class="step-dots" id="stepDots" aria-label="Progresso do questionário"></div>
-          <div class="mission-map" id="missionMap" aria-label="Mapa dos eixos do diagnóstico"></div>
+          <div class="mission-map" id="missionMap" aria-label="Mapa das dimensões do diagnóstico"></div>
           <p class="draft-status" id="draftStatus" role="status">Salvamento automático ativado.</p>
         </div>
 
@@ -224,12 +224,12 @@
 
           <div class="result-grid">
             <article class="glass-card chart-card">
-              <div class="card-title"><div><span>Visão por dimensão</span><h3>Resultado por eixo</h3></div><i data-lucide="chart-no-axes-column-increasing"></i></div>
+              <div class="card-title"><div><span>Visão por dimensão</span><h3>Resultado por dimensão</h3></div><i data-lucide="chart-no-axes-column-increasing"></i></div>
               <div class="axis-chart" id="axisChart"></div>
             </article>
             <aside class="result-side">
-              <article class="glass-card highlight-card strong"><i data-lucide="trophy"></i><span>Eixo mais forte</span><h3 id="strongestAxis">—</h3><p id="strongestPercent">—</p></article>
-              <article class="glass-card highlight-card priority"><i data-lucide="target"></i><span>Eixo prioritário</span><h3 id="priorityAxis">—</h3><p id="priorityPercent">—</p></article>
+              <article class="glass-card highlight-card strong"><i data-lucide="trophy"></i><span>Dimensão mais forte</span><h3 id="strongestAxis">—</h3><p id="strongestPercent">—</p></article>
+              <article class="glass-card highlight-card priority"><i data-lucide="target"></i><span>Dimensão prioritária</span><h3 id="priorityAxis">—</h3><p id="priorityPercent">—</p></article>
             </aside>
           </div>
 
@@ -239,7 +239,7 @@
           </article>
 
           <article class="glass-card report-block">
-            <div class="card-title"><div><span>Próximos passos</span><h3>Plano de ação automático</h3></div><i data-lucide="clipboard-check"></i></div>
+            <div class="card-title"><div><span>Próximos passos</span><h3>Plano de desenvolvimento</h3></div><i data-lucide="clipboard-check"></i></div>
             <div class="table-wrap"><table class="action-table"><thead><tr><th>Questão</th><th>Achado e risco</th><th>Recomendação</th><th>Responsável</th><th>Cargo/Função</th><th>Prazo</th><th>Status</th></tr></thead><tbody id="actionPlanBody"></tbody></table></div>
           </article>
 
@@ -293,14 +293,14 @@
           </article>
 
           <article class="dashboard-panel axis-performance">
-            <div class="dashboard-panel-head"><div><small>Desempenho coletivo</small><h3>Média por eixo</h3></div><i data-lucide="bar-chart-3"></i></div>
+            <div class="dashboard-panel-head"><div><small>Desempenho coletivo</small><h3>Média por dimensão</h3></div><i data-lucide="bar-chart-3"></i></div>
             <div class="dashboard-axis-chart" id="dashboardAxisChart"></div>
           </article>
         </div>
 
         <div class="dashboard-grid lower">
           <article class="dashboard-panel">
-            <div class="dashboard-panel-head"><div><small>Prioridades recorrentes</small><h3>Eixos que mais exigem atenção</h3></div><i data-lucide="target"></i></div>
+            <div class="dashboard-panel-head"><div><small>Prioridades recorrentes</small><h3>Dimensões que mais exigem atenção</h3></div><i data-lucide="target"></i></div>
             <div class="ranking-list" id="priorityRanking"></div>
           </article>
           <article class="dashboard-panel">

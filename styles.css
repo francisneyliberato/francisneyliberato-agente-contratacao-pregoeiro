@@ -527,7 +527,13 @@ h1 em { color:transparent; background:linear-gradient(90deg,var(--gold),#ff8f62)
   .benefit-grid { grid-template-columns:1fr 1fr; }
   .form-grid,.question-extras { grid-template-columns:1fr; }
   .field-wide,.access-field { grid-column:auto; }
-  .scale-options { grid-template-columns:repeat(4,1fr); }
+  .scale-options { grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+  .scale-options .score-option:last-child { grid-column:1/-1; }
+  .score-option span { min-height:82px; padding:8px 9px; }
+  .score-option b { font-size:1.28rem; }
+  .score-option small { font-size:.72rem; line-height:1.22; }
+  .question-head h4 { font-size:1.08rem; line-height:1.42; }
+  .evidence-expected { font-size:.82rem; line-height:1.5; }
   .result-score { grid-template-columns:1fr; text-align:center; justify-items:center; }
   .score-comparison { grid-template-columns:1fr; gap:14px; }
   .score-comparison div { border:0; border-bottom:1px solid var(--line); padding:0 0 14px; }
@@ -554,19 +560,32 @@ h1 em { color:transparent; background:linear-gradient(90deg,var(--gold),#ff8f62)
   .orbital-card { padding:28px 18px; }
   .benefit-grid { grid-template-columns:1fr; }
   .diagnostic-shell { border-radius:22px; }
-  .progress-wrap { padding:20px; }
-  .game-hud { grid-template-columns:1fr 1fr; gap:7px; }
-  .game-hud>div { min-height:55px; padding:8px 10px; }
-  .hud-level,.hud-streak { grid-column:span 1; }
-  .mission-map { gap:4px; overflow-x:auto; padding-bottom:5px; }
-  .mission-node { min-width:27px; }
-  .form-step { padding:24px 18px; }
+  .progress-wrap { padding:14px 16px 12px; }
+  .game-hud { grid-template-columns:1fr 1fr; gap:8px; margin-bottom:13px; }
+  .game-hud>div { min-height:48px; padding:7px 9px; }
+  .game-hud .hud-level,.game-hud>div:nth-child(2) { display:none; }
+  .game-hud small { font-size:.54rem; }
+  .game-hud strong { font-size:.82rem; }
+  .hud-streak svg { width:21px; }
+  .progress-copy { font-size:.82rem; }
+  .mission-map { gap:5px; overflow-x:auto; padding:4px 0 6px; scrollbar-width:none; }
+  .mission-map::-webkit-scrollbar { display:none; }
+  .mission-node { min-width:31px; }
+  .mission-node span { width:29px; height:29px; }
+  .draft-status { margin-top:6px; font-size:.68rem; }
+  .form-step { padding:22px 16px 28px; }
   .step-heading { align-items:flex-start; }
   .step-icon { width:46px; height:46px; flex-basis:46px; }
   .axis-intro { flex-direction:column; gap:7px; }
-  .question-card { padding:18px 14px; }
-  .scale-options { grid-template-columns:repeat(2,1fr); }
-  .scale-options .score-option:last-child { grid-column:1/-1; }
+  .question-card { padding:18px 14px 20px; }
+  .question-head { gap:12px; }
+  .question-number { min-width:44px; height:44px; font-size:1.18rem; }
+  .question-head h4 { font-size:1.12rem; }
+  .weight-badge { font-size:.76rem; padding:7px 10px; }
+  .axis-intro { padding:14px; margin-bottom:18px; }
+  .axis-intro p { font-size:.88rem; line-height:1.5; }
+  .score-option span { min-height:96px; }
+  .score-option small { font-size:.76rem; }
   .step-actions { flex-direction:column-reverse; }
   .step-actions .button { width:100%; }
   .result-side { grid-template-columns:1fr; }
