@@ -35,3 +35,17 @@ CREATE TABLE IF NOT EXISTS leads (
 CREATE INDEX IF NOT EXISTS idx_leads_created_at ON leads(created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_leads_email ON leads(email);
 CREATE INDEX IF NOT EXISTS idx_leads_classificacao ON leads(classificacao);
+
+-- Rascunhos para retomada segura pelo WhatsApp informado no cadastro.
+CREATE TABLE IF NOT EXISTS assessment_drafts (
+  id TEXT PRIMARY KEY,
+  status TEXT NOT NULL DEFAULT 'em_andamento',
+  updated_at TEXT NOT NULL DEFAULT (datetime('now')),
+  whatsapp TEXT NOT NULL,
+  email TEXT NOT NULL,
+  participant_json TEXT NOT NULL,
+  answers_json TEXT NOT NULL,
+  current_step INTEGER NOT NULL DEFAULT 0
+);
+
+CREATE INDEX IF NOT EXISTS idx_assessment_drafts_whatsapp ON assessment_drafts(whatsapp, updated_at DESC);

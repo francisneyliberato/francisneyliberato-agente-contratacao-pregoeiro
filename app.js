@@ -657,6 +657,7 @@
     localStorage.setItem(STORAGE_KEYS.activeDraft, id);
     state.currentDraftId = id;
     state.lastSavedAt = draft.updatedAt;
+    saveRemoteDraftSoon(draft);
     const status = $("#draftStatus");
     if (status) status.textContent = `Salvo automaticamente às ${new Date(draft.updatedAt).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}.`;
   }
@@ -681,6 +682,22 @@
     return answers;
   }
 
+  function saveRemoteDraftSoon(draft) {
+    clearTimeout(saveRemoteDraftSoon.timer);
+    saveRemoteDraftSoon.timer = setTimeout(async () => {
+      if (!draft.participant?.consentimentoLgpd || !draft.participant?.whatsapp || !draft.participant?.email) return;
+      try {
+        await fetch("/api/drafts", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id: draft.id, status: draft.status, participant: draft.participant, answers: draft.answers, currentStep: draft.currentStep })
+        });
+      } catch {
+        // O rascunho local permanece disponível caso a conexão esteja indisponível.
+      }
+    }, 1200);
+  }
+
   function loadDrafts() {
     try {
       return JSON.parse(localStorage.getItem(STORAGE_KEYS.drafts) || "[]");
@@ -696,13 +713,13 @@
   }
 
   function applyDraft(draft, announce = true) {
-    state.currentDraftId = draft.id;
+    state.currentDraftId = draft.draftId || draft.id;
     state.answers = draft.answers || {};
     state.participant = draft.participant || null;
     state.result = draft.result || null;
     fillParticipant(draft.participant || {});
     fillAnswers(draft.answers || {});
-    localStorage.setItem(STORAGE_KEYS.activeDraft, draft.id);
+    localStorage.setItem(STORAGE_KEYS.activeDraft, state.currentDraftId);
     showStep(Math.min(Number(draft.currentStep || 0), DATA.axes.length + 1));
     if (announce) {
       $("#teste").scrollIntoView({ behavior: "smooth" });
@@ -1124,18 +1141,21 @@
     const drafts = loadDrafts().filter(matchesContact);
     const localCompleted = loadLocalLeads().filter(matchesContact).map(item => ({ ...item, status: "concluido" }));
     let remoteCompleted = [];
+    let remoteDrafts = [];
     try {
       const params = new URLSearchParams();
       params.set("whatsapp", whatsapp);
-      const response = await fetch(`/api/assessments?${params}`, { headers: { Accept: "application/json" } });
-      if (response.ok) {
-        const payload = await response.json();
-        remoteCompleted = payload.assessments || [];
-      }
+      const [completedResponse, draftsResponse] = await Promise.all([
+        fetch(`/api/assessments?${params}`, { headers: { Accept: "application/json" } }),
+        fetch(`/api/drafts?${params}`, { headers: { Accept: "application/json" } })
+      ]);
+      if (completedResponse.ok) remoteCompleted = (await completedResponse.json()).assessments || [];
+      if (draftsResponse.ok) remoteDrafts = (await draftsResponse.json()).drafts || [];
     } catch {
       remoteCompleted = [];
+      remoteDrafts = [];
     }
-    renderLookupResults([...drafts, ...localCompleted, ...remoteCompleted]);
+    renderLookupResults([...drafts, ...remoteDrafts, ...localCompleted, ...remoteCompleted]);
   }
 
   function renderLookupResults(items) {
@@ -1171,7 +1191,7 @@
       `;
     }).join("");
     $$("[data-resume-draft]", container).forEach(button => button.addEventListener("click", () => {
-      const draft = loadDrafts().find(item => item.id === button.dataset.resumeDraft);
+      const draft = unique.find(item => item.id === button.dataset.resumeDraft) || loadDrafts().find(item => item.id === button.dataset.resumeDraft);
       if (draft) applyDraft(draft, true);
     }));
     $$("[data-download-result]", container).forEach(button => button.addEventListener("click", () => {
