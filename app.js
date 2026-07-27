@@ -73,10 +73,6 @@
             <p>Responda de acordo com sua conduta predominante nos últimos doze meses.</p>
           </div>
         </div>
-        <div class="axis-intro">
-          <p><strong>Como responder:</strong> assinale somente uma alternativa em cada questão. A = 1 ponto, B = 2, C = 3, D = 4 e E = 5.</p>
-          <strong>${axis.questions.length} questões situacionais</strong>
-        </div>
         ${axis.questions.map(question => renderQuestion(question, axis)).join("")}
         <div class="validation-summary step-error" role="alert" aria-live="polite"></div>
         <div class="step-actions">
@@ -105,9 +101,7 @@
           <span class="question-number">${question.number}</span>
           <div>
             <h4>${escapeHTML(question.text)}</h4>
-            <p class="evidence-expected"><strong>Competência:</strong> ${escapeHTML(axis.name)}</p>
           </div>
-          <span class="weight-badge">A–E · 1 a 5 pontos</span>
         </div>
         <div class="scale-options situational-options" role="radiogroup" aria-label="Resposta da questão ${question.number}">
           ${question.options.map((option, index) => `
