@@ -1081,7 +1081,7 @@
 
   async function resetDashboardData() {
     const confirmed = window.confirm(
-      "Deseja zerar o Dashboard para uma nova palestra?\n\nOs leads, pesquisas individuais e relatórios continuarão salvos. Apenas o painel consolidado passará a contar as respostas feitas a partir de agora."
+      "Deseja iniciar um novo período no Dashboard?\n\nOs leads, pesquisas individuais e relatórios continuarão salvos. Apenas o painel consolidado passará a contar as respostas feitas a partir de agora."
     );
     if (!confirmed) return;
     const button = $("#resetDashboardData");
@@ -1314,7 +1314,7 @@ WhatsApp: ${PDF_LINKS.whatsapp}`;
   }
 
   async function shareDashboardPDF() {
-    const text = `Dashboard de maturidade profissional
+    const text = `Dashboard da Autoavaliação do Agente de Contratação e Pregoeiro
 Página da avaliação: ${PDF_LINKS.assessment}
 Site: ${PDF_LINKS.site}
 WhatsApp: ${PDF_LINKS.whatsapp}`;
@@ -1328,7 +1328,7 @@ WhatsApp: ${PDF_LINKS.whatsapp}`;
       file = await generateDashboardPDF({ returnFile: true, silent: true });
       if (!file) throw new Error("PDF do Dashboard não foi gerado.");
       if (navigator.canShare?.({ files: [file] }) && navigator.share) {
-        await navigator.share({ title: "Dashboard de maturidade profissional", text, files: [file] });
+        await navigator.share({ title: "Dashboard da Autoavaliação do Agente de Contratação e Pregoeiro", text, files: [file] });
         showToast("PDF do Dashboard compartilhado com sucesso.");
         return;
       }
@@ -1388,9 +1388,9 @@ WhatsApp: ${PDF_LINKS.whatsapp}`;
         }
       });
       const { jsPDF } = window.jspdf;
-      const doc = new jsPDF({ unit: "mm", format: "a4", orientation: "portrait", compress: true });
-      const W = 210, H = 297, M = 12;
-      const headerH = 22, footerH = 15;
+      const doc = new jsPDF({ unit: "mm", format: "a4", orientation: "landscape", compress: true });
+      const W = 297, H = 210, M = 14;
+      const headerH = 26, footerH = 15;
       const contentTop = headerH + 7;
       const contentH = H - contentTop - footerH;
       const contentW = W - M * 2;
@@ -1426,7 +1426,7 @@ WhatsApp: ${PDF_LINKS.whatsapp}`;
 
   function addDashboardPdfHeader(doc, W, M) {
     doc.setFillColor(7, 21, 34);
-    doc.rect(0, 0, W, 22, "F");
+    doc.rect(0, 0, W, 26, "F");
     doc.setFillColor(246, 185, 74);
     doc.roundedRect(M, 5, 9, 9, 2, 2, "F");
     doc.setTextColor(7, 21, 34);
@@ -1440,7 +1440,11 @@ WhatsApp: ${PDF_LINKS.whatsapp}`;
     doc.setTextColor(245, 249, 252);
     doc.setFont("helvetica", "bold");
     doc.setFontSize(11);
-    doc.text("Dashboard de maturidade profissional", M + 14, 15.5);
+    doc.text("Dashboard da Autoavaliação do Agente de Contratação e Pregoeiro", M + 14, 14.5);
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(6.7);
+    doc.setTextColor(197, 211, 224);
+    doc.text("Relatório consolidado de resultados e prioridades de desenvolvimento", M + 14, 20);
   }
 
   function addDashboardPdfFooter(doc, W, H, M, page, pageCount) {
@@ -1466,6 +1470,8 @@ WhatsApp: ${PDF_LINKS.whatsapp}`;
     linkPart("www.francisney.com.br", PDF_LINKS.site);
     textPart(" | ");
     linkPart("WhatsApp", PDF_LINKS.whatsapp);
+    textPart(" | ");
+    linkPart("E-mail", PDF_LINKS.email);
     textPart(" | Francisney Liberato");
     doc.setTextColor(...muted);
     doc.text(`${page}/${pageCount}`, W - M, y, { align: "right" });
