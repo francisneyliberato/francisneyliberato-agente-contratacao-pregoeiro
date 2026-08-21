@@ -613,3 +613,6 @@ h1 em { color:transparent; background:linear-gradient(90deg,var(--gold),#ff8f62)
   .glass-card { color:#14202a; background:#fff; border:1px solid #d8e0e6; box-shadow:none; break-inside:avoid; }
   .result-score p,.axis-bar-row>span,.action-table td,.recommendation-item p { color:#405264; }
 }
+.access-field>span:first-child { color:#f3f8fb; font-size:.9rem; }
+.access-field>span:first-child small { color:#f3f8fb; font-size:inherit; }
+.access-code-hint { color:var(--muted); font-size:.72rem; }

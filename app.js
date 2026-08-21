@@ -795,6 +795,12 @@
   }
 
   function bindGeneralUI() {
+    const accessCodeInput = $("#diagnosticForm [name=\"codigoAcesso\"]");
+    accessCodeInput?.addEventListener("paste", event => {
+      event.preventDefault();
+      showToast("Digite o código de acesso manualmente. A colagem não é permitida.");
+    });
+    accessCodeInput?.addEventListener("drop", event => event.preventDefault());
     const menuToggle = $("#menuToggle");
     menuToggle.addEventListener("click", () => {
       const open = !menuToggle.classList.contains("open");
